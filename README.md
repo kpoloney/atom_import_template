@@ -17,11 +17,13 @@ For a step-by-step process for deploying the app as a desktop app, see James You
 
 For this method, you will need Git and [Node.js](https://nodejs.org/en/download/) installed. After cloning the COVAIL repository in Git, run the following in the command line:
 
-``
+```
 npm install electron-packager -g
+
 cd electron-quick-start
+
 npm install
-``
+```
 
 Copy the files from the atom_import repository into the electron-quick-start folder, replacing the sample app.r file in it. 
 
