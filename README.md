@@ -5,7 +5,7 @@ This is an R shiny app to transform bulk archival descriptions to fit the AtoM i
 ## Usage
 
 Within the application:
-* Select your institution
+* Select your institution from the dropdown.
 * Using the file upload button, select the csv of item- and file- level descriptions.
 * If using a description format from an institution other than the SFU Archives, upload a csv containing your data mapping of AtoM fields to legacy fields when prompted.
   * Mapping must be in the following format, with the AtoM fields listed in the order in which they appear on the import template:
@@ -20,9 +20,9 @@ Within the application:
 
   * If an AtoM field has no equivalent in your descriptions, leave the corresponding cell blank. 
   * If you would like the same value for all rows for a column, enter it in the format: [=value] where "value" is the desired text.
-* Click the download button once your upload is complete to download the modified data.
+* Click the download button once your upload is complete to save the modified data.
 
-To use the app locally, it must be run using R with the shiny package installed. Use the function `shiny::runApp("filepath")` in R. It can also be deployed as a standalone app using the process described in the next section.
+To use the app, it must be run using R with the shiny package installed. Use the function `shiny::runApp("filepath")` in R. It can also be deployed as a standalone app using the process described in the next section.
 
 
 ## Desktop App
