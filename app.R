@@ -6,8 +6,15 @@ map <- read.csv(file.path("data", "Mapping.csv"), na.strings = "", stringsAsFact
 ui <- fluidPage(
   
   # user inputs original description csv
-  fileInput("descriptions", "Upload"),
-  downloadButton("download", "atom_import.csv")
+  selectInput("inst", label = "Institution", choices = c("SFU Archives", "SFU Special Collections", "Other")),
+  fileInput("descriptions", "Upload Descriptions"),
+  
+  # make this conditional based on input inst
+  conditionalPanel(
+    condition = "input.inst != 'SFU Archives'",
+    fileInput("map", "Upload Mapping")
+  ),
+  uiOutput("atom")
   
 )
 
@@ -16,13 +23,25 @@ server <- function(input, output, session) {
     read.csv(input$descriptions$datapath, stringsAsFactors = F)
   })
   
+  map_reactive <- reactive({
+    if(input$inst != "SFU Archives")
+      return(read.csv(input$map$datapath, stringsAsFactors = F, na.strings = ""))
+    else
+      return(map)
+  })
+
   # output transformed data for download
+  output$atom <- renderUI({
+    req(input$descriptions)
+    downloadButton("download")
+  })
+  
   output$download <- downloadHandler(
     filename = function(){
       "atom_import.csv"
     },
     content = function(file){
-      write.csv(transform_template(data(), map), file, na = "", row.names = F)
+      write.csv(transform_template(data(), map_reactive(), as.character(input$inst)), file, na = "", row.names = F)
     }
   )
   
