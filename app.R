@@ -6,7 +6,7 @@ map <- read.csv(file.path("data", "Mapping.csv"), na.strings = "", stringsAsFact
 ui <- fluidPage(
   
   # user inputs original description csv
-  selectInput("inst", label = "Institution", choices = c("SFU Archives", "SFU Special Collections", "Other")),
+  selectInput("inst", label = "Institution", choices = c("SFU Archives", "Other")),
   fileInput("descriptions", "Upload Descriptions"),
   
   # make this conditional based on input inst
