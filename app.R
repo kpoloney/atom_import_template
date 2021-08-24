@@ -1,6 +1,6 @@
 library(shiny)
 source("import_template.R")
-map <- read.csv(file.path("data", "Mapping.csv"), na.strings = "", stringsAsFactors = F)
+map <- read.csv(file.path("data", "Mapping.csv"), na.strings = "", encoding = "UTF-8", stringsAsFactors = F)
 
 # Create UI to allow user to select a local file
 ui <- fluidPage(
