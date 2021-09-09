@@ -4,7 +4,7 @@ transform_template <- function(origin, map, inst){
   
   # Name formatting
   names(map) <- c("atom", "origin_fields")
-  names(origin) <- gsub("^ï\\.\\.", "", names(origin)) # this error occurs if csv saved w/ UTF-8 encoding
+  names(origin) <- gsub("^\\.\\.", "", names(origin)) # this error occurs from UTF-8 BOM on ms apps
   
   # SFU-specific formatting
   if (inst == "SFU Archives") {

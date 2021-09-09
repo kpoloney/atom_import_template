@@ -24,10 +24,11 @@ server <- function(input, output, session) {
   })
   
   map_reactive <- reactive({
-    if(input$inst != "SFU Archives")
-      return(read.csv(input$map$datapath, stringsAsFactors = F, na.strings = ""))
-    else
+    if(input$inst != "SFU Archives") {
+      return(read.csv(input$map$datapath, stringsAsFactors = F, na.strings = "", encoding = "UTF-8"))
+    } else {
       return(map)
+    }
   })
 
   # output transformed data for download

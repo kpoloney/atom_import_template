@@ -7,7 +7,8 @@ This is an R shiny app to transform bulk archival descriptions to fit the AtoM i
 Within the application:
 * Select your institution from the dropdown.
 * Using the file upload button, select the csv of item- and file- level descriptions. The file must be in csv format.
-* If using a description format from an institution other than the SFU Archives, upload a csv containing your data mapping of AtoM fields to legacy fields when prompted.
+* If using a description format from an institution other than the SFU Archives, upload a csv containing your data mapping of AtoM fields to legacy fields when prompted. 
+  * NOTE: if using a Microsoft application to save your csv, ensure that it is saved using the 'CSV (Comma delimited)' option and NOT the 'CSV UTF-8' option.
   * Mapping must be in the following format, with the AtoM fields listed in the order in which they appear on the import template:
 
 | AtoM field                    | Original field| 
