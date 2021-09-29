@@ -33,7 +33,7 @@ transform_template <- function(origin, map, inst){
         
       } else if (atom_used$atom[j] == "levelOfDescription" & inst == "SFU Archives"){
         
-        atom_template$levelOfDescription[i] <- names(origin)[which.max(is.na(origin[i, 1:6]))-1]
+        atom_template$levelOfDescription[i] <- ifelse(!is.na(origin$Item[i]), "Item", names(origin)[which.max(is.na(origin[i, 1:6]))-1])
         
       } else if (atom_used$atom[j] == "qubitParentSlug" & inst == "SFU Archives"){
         
