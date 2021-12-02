@@ -1,17 +1,19 @@
 library(shiny)
 source("import_template.R")
+
 map <- read.csv(file.path("data", "Mapping.csv"), na.strings = "", encoding = "UTF-8", stringsAsFactors = F)
+scrb <- read.csv(file.path("data", "MappingSCRB.csv"), na.strings = "", encoding = "UTF-8", stringsAsFactors = F)
 
 # Create UI to allow user to select a local file
 ui <- fluidPage(
   
   # user inputs original description csv
-  selectInput("inst", label = "Institution", choices = c("SFU Archives", "Other")),
+  selectInput("inst", label = "Institution", choices = c("SFU Archives", "SFU Special Collections", "Other")),
   fileInput("descriptions", "Upload Descriptions"),
   
   # make this conditional based on input inst
   conditionalPanel(
-    condition = "input.inst != 'SFU Archives'",
+    condition = "input.inst == 'Other'",
     fileInput("map", "Upload Mapping")
   ),
   uiOutput("atom")
@@ -20,14 +22,16 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   data <- eventReactive(input$descriptions, {
-    read.csv(input$descriptions$datapath, stringsAsFactors = F)
+    read.csv(input$descriptions$datapath, stringsAsFactors = F, na.strings="")
   })
   
   map_reactive <- reactive({
-    if(input$inst != "SFU Archives") {
+    if(input$inst == "Other") {
       return(read.csv(input$map$datapath, stringsAsFactors = F, na.strings = "", encoding = "UTF-8"))
-    } else {
+    } else if (input$inst == "SFU Archives"){
       return(map)
+    } else if (input$inst == "SFU Special Collections"){
+      return(scrb)
     }
   })
 

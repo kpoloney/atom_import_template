@@ -1,23 +1,23 @@
-atom,sfu_fields
-referenceCode,Ref code
-legacyId,
-parentId,
-qubitParentSlug,[AtoM slug of parent series]
+atom,origin_fields
+referenceCode,
+legacyId,legacyId
+parentId,ParentID
+qubitParentSlug,qubitParentSlug
 accessionNumber,
-title,Title
-radGeneralMaterialDesignation,
+title,title
+radGeneralMaterialDesignation,radGeneralMaterialDesignation
 alternateTitle,
 radOtherTitleInformation,
 radTitleStatementOfResponsibility,
 radTitleStatementOfResponsibilityNote,
 radTitleAttributionsAndConjectures,
 radTitleContinues,
-radTitleSourceOfTitleProper,Source of title
+radTitleSourceOfTitleProper,
 radTitleVariationsInTitle,
 radTitleParallelTitles,
-levelOfDescription,[level]
-repository,
-identifier,Ref code
+levelOfDescription,levelOfDescription
+repository,identifier
+identifier,
 radEdition,
 radEditionStatementOfResponsibility,
 radStatementOfScaleCartographic,
@@ -25,7 +25,7 @@ radStatementOfProjection,
 radStatementOfCoordinates,
 radStatementOfScaleArchitectural,
 radIssuingJurisdiction,
-extentAndMedium,
+extentAndMedium,extentAndMedium
 radTitleProperOfPublishersSeries,
 radParallelTitlesOfPublishersSeries,
 radOtherTitleInformationOfPublishersSeries,
@@ -34,16 +34,16 @@ radNumberingWithinPublishersSeries,
 radPublishersSeriesNote,
 radNoteOnPublishersSeries,
 archivalHistory,
-scopeAndContent,
+scopeAndContent,scopeAndContent
 physicalCharacteristics,
 acquisition,
-arrangement,
-language,
+arrangement,arrangement
+language,language
 script,
 languageNote,
 locationOfOriginals,
 locationOfCopies,
-accessConditions,Access status
+accessConditions,
 reproductionConditions,
 findingAids,
 relatedUnitsOfDescription,
@@ -63,27 +63,27 @@ genreAccessPoints,
 descriptionIdentifier,
 institutionIdentifier,
 rules,
-descriptionStatus,[=Final]
+descriptionStatus,
 levelOfDetail,
 revisionHistory,
 languageOfDescription,
-scriptOfDescription,[=en]
+scriptOfDescription,
 sources,
-publicationStatus,[=Draft]
+publicationStatus,publicationStatus
 digitalObjectPath,
 digitalObjectURI,
 generalNote,
-physicalObjectName,Container
-physicalObjectLocation,[=Archives stacks]
-physicalObjectType,Container type
+physicalObjectName,physicalObjectName
+physicalObjectLocation,physicalObjectType
+physicalObjectType,
 alternativeIdentifiers,
 alternativeIdentifierLabels,
-eventDates,Date range
-eventTypes,[=Creation]
-eventStartDates,Start
-eventEndDates,End
+eventDates,eventDates
+eventTypes,eventTypes
+eventStartDates,eventStartDates
+eventEndDates,eventEndDates
 eventDescriptions,
 eventActors,
 eventActorHistories,
 eventPlaces,
-culture,[=en]
+culture,
