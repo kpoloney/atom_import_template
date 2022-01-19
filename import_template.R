@@ -23,54 +23,82 @@ transform_template <- function(origin, map, inst){
   #Make sure all expected columns are in the original data
   atom_used <- subset(atom_used, atom_used$origin_fields %in% names(origin) | 
                         grepl("^\\[", atom_used$origin_fields))
-  
-  # Map for everyone else  
+    
   for (i in 1:nrow(origin)) {
     for (j in 1:nrow(atom_used)) {
       if (atom_used$origin_fields[j] == atom_used$atom[j]) {
-        atom_template[i, atom_used$atom[j]] <- origin[i, atom_used$atom[j]]
-      }
-      
-      if (!grepl("^\\[", atom_used$origin_fields[j])) {
+        # if the field in atom has the same name as the field in original
+        atom_template[i, atom_used$atom[j]] <-
+          origin[i, atom_used$atom[j]]
+        
+      } else if (!grepl("^\\[", atom_used$origin_fields[j])) {
+        # differently named fields with particular requirements
         if (atom_used$origin_fields[j] == "Start" |
             atom_used$origin_fields[j] == "End") {
           atom_template[i, atom_used$atom[j]]  <-
             paste0(origin[i, atom_used$origin_fields[j]], "-00-00")
           
-        } else
+        } else if ((atom_used$atom[j] == "physicalObjectType" &
+                    inst == "SFU Archives") &
+                   (is.na(origin$Container_type[i]) &
+                    !is.na(origin$Container[i]))) {
+          atom_template[i, atom_used$atom[j]] <- "Archival box - standard"
+        } else if (atom_used$atom[j] == "physicalObjectName" &
+                   inst == "SFU Archives" & !is.na(origin$Container[i])) {
+          atom_template[i, atom_used$atom[j]] <- paste(origin[i, "Fonds"],
+                                                        origin[i, atom_used$origin_fields[j]], sep = "-")
           
+        } else
+          # For differently named fields (between original and atom) with no special requirements
           atom_template[i, atom_used$atom[j]]  <-
             origin[i, atom_used$origin_fields[j]]
         
-      } else if (grepl('=', atom_used$origin_fields[j])) {
-        atom_template[i, atom_used$atom[j]] <-
-          gsub("^\\[=(.*)]$", "\\1", atom_used$origin_fields[j])
-        
       } else if (atom_used$atom[j] == "levelOfDescription" &
                  inst == "SFU Archives") {
-        if(is.na(origin$Sub[i]) & is.na(origin$SubSub[i])){
+        # For SFU ARM - description level is derived from other columns
+        if (is.na(origin$Sub[i]) & is.na(origin$SubSub[i])) {
           s <- dplyr::select(origin, Fonds:Item, -Sub, -SubSub)
-          max_na <- names(s)[max(which(is.na(s[i,])))-1]
+          max_na <- names(s)[max(which(is.na(s[i, ]))) - 1]
           atom_template[i, "levelOfDescription"] <-
             ifelse(!is.na(origin$Item[i]), "Item", max_na)
           
         } else if (is.na(origin$SubSub[i])) {
-          atom_template[i, "levelOfDescription"] <- ifelse(!is.na(origin$Item[i]), "Item", 
-                                                               ifelse(!is.na(origin$File[i]), "File", "Subseries"))
+          atom_template[i, "levelOfDescription"] <-
+            ifelse(!is.na(origin$Item[i]),
+                   "Item",
+                   ifelse(!is.na(origin$File[i]), "File", "Subseries"))
         } else
-          atom_template[i, "levelOfDescription"] <- ifelse(!is.na(origin$Item[i]), "Item", 
-                                                        ifelse(!is.na(origin$File[i]), "File", "Sub-subseries"))
-
+          atom_template[i, "levelOfDescription"] <-
+            ifelse(!is.na(origin$Item[i]),
+                   "Item",
+                   ifelse(!is.na(origin$File[i]), "File", "Sub-subseries"))
+        
       } else if (atom_used$atom[j] == "qubitParentSlug" &
                  inst == "SFU Archives") {
         atom_template$qubitParentSlug[i] <-
-          gsub("(f-\\d+-\\d+-\\d+)-\\d+-\\d",
-               "\\1",
-               origin$Ref_code[i],
-               ignore.case = T)
+          tolower(gsub(
+            "(f-\\d+-\\d+-\\d+)-\\d+-\\d",
+            "\\1",
+            origin$Ref_code[i],
+            ignore.case = T
+          ))
+        
+      } else if (grepl('=', atom_used$origin_fields[j])) {
+        # For exact text fields (all rows have the same value)
+        atom_template[i, atom_used$atom[j]] <-
+          gsub("^\\[=(.*)]$", "\\1", atom_used$origin_fields[j])
         
       } else
         next
+    }
+  }
+  
+  if (inst=="SFU Archives"){
+    for (k in 1:nrow(atom_template)){
+      if (is.na(atom_template$physicalObjectName[k])){
+        atom_template$physicalObjectLocation[k] <- NA
+        atom_template$physicalObjectType[k] <- NA
+      }
     }
   }
   

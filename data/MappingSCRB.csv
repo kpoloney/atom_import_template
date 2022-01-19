@@ -16,8 +16,8 @@ radTitleSourceOfTitleProper,
 radTitleVariationsInTitle,
 radTitleParallelTitles,
 levelOfDescription,levelOfDescription
-repository,identifier
-identifier,
+repository,
+identifier,identifier
 radEdition,
 radEditionStatementOfResponsibility,
 radStatementOfScaleCartographic,
@@ -74,8 +74,8 @@ digitalObjectPath,
 digitalObjectURI,
 generalNote,
 physicalObjectName,physicalObjectName
-physicalObjectLocation,physicalObjectType
-physicalObjectType,
+physicalObjectLocation,[=SCRB stacks]
+physicalObjectType,physicalObjectType
 alternativeIdentifiers,
 alternativeIdentifierLabels,
 eventDates,eventDates

@@ -27,8 +27,7 @@ To use the app locally, it must be run using R with the shiny package installed.
 
 ## Web App
 
-This app has been deployed on shinyapps at the following url: https://kpolo.shinyapps.io/import_app/
-
+This app has been deployed on shinyapps at the following url: https://sfuarchives.shinyapps.io/atom_import/
 
 ## Desktop App
 
