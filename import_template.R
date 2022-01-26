@@ -55,9 +55,11 @@ transform_template <- function(origin, map, inst) {
         } else if (atom_used$atom[j] == "physicalObjectName" &
                    inst == "SFU Archives" &
                    !is.na(origin$Container[i])) {
+          
+          # If container is anything other than a single number, don't add fonds number
           atom_template[i, atom_used$atom[j]] <-
-            ifelse(origin$Container[i] == "MC",
-                   "MC",
+            ifelse(grepl("[[:alpha:]]|[[:punct:]]", origin$Container[i]),
+                   origin$Container[i],
                    paste(origin[i, "Fonds"],
                          origin[i, atom_used$origin_fields[j]], sep = "-"))
           
@@ -116,6 +118,11 @@ transform_template <- function(origin, map, inst) {
       if (is.na(atom_template$physicalObjectName[k])) {
         atom_template$physicalObjectLocation[k] <- NA
         atom_template$physicalObjectType[k] <- NA
+      }
+      if (is.na(atom_template$eventDates[k])) {
+        atom_template$eventTypes[k] <- NA
+        atom_template$eventStartDates[k] <- NA
+        atom_template$eventEndDates[k] <- NA
       }
     }
   }
