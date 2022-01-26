@@ -6,6 +6,15 @@ transform_template <- function(origin, map, inst) {
   names(origin) <-
     gsub("^\\.\\.", "", names(origin)) # this error occurs from UTF-8 BOM on ms apps
   
+  # read.csv() will add an X to col names starting with non-letter/number or non-dot chars. 
+  # Change map to reflect this.
+  if (inst == "Other") {
+    map$origin_fields <- ifelse(
+      !grepl("^[[:alpha:]]|^\\d|^\\.|^\\[", map$origin_fields) & !is.na(map$origin_fields),
+      paste0("X", map$origin_fields),
+           map$origin_fields)
+  }
+  
   # SFU-specific formatting
   if (inst == "SFU Archives") {
     names(origin)[grep("fonds", names(origin), ignore.case = T)] <-
@@ -47,18 +56,16 @@ transform_template <- function(origin, map, inst) {
           atom_template[i, atom_used$atom[j]]  <-
             paste0(origin[i, atom_used$origin_fields[j]], "-00-00")
           
-        } else if ((atom_used$atom[j] == "physicalObjectType" &
-                    inst == "SFU Archives") &
-                   (is.na(origin$Container_type[i]) &
-                    !is.na(origin$Container[i]))) {
-          atom_template[i, atom_used$atom[j]] <- "Archival box - standard"
-        } else if (atom_used$atom[j] == "physicalObjectName" &
-                   inst == "SFU Archives" &
-                   !is.na(origin$Container[i])) {
+        } else if (atom_used$atom[j] == "physicalObjectType" &
+                    inst == "SFU Archives") {
+          atom_template[i, atom_used$atom[j]] <- ifelse(is.na(origin$Container_type[i]) & !is.na(origin$Container[i]),
+                                                              "Archival box - standard", origin[i, atom_used$origin_fields[j]])
           
-          # If container is anything other than a single number, don't add fonds number
+        } else if (atom_used$atom[j] == "physicalObjectName" &
+                   inst == "SFU Archives") {
+          # If container field is NA or anything other than a single number, don't add fonds number
           atom_template[i, atom_used$atom[j]] <-
-            ifelse(grepl("[[:alpha:]]|[[:punct:]]", origin$Container[i]),
+            ifelse(is.na(origin$Container[i]) | grepl("[[:alpha:]]|[[:punct:]]", origin$Container[i]),
                    origin$Container[i],
                    paste(origin[i, "Fonds"],
                          origin[i, atom_used$origin_fields[j]], sep = "-"))
@@ -113,7 +120,7 @@ transform_template <- function(origin, map, inst) {
     }
   }
   
-  if (inst == "SFU Archives") {
+  if (inst == "SFU Archives"|inst == "SFU Special Collections") {
     for (k in 1:nrow(atom_template)) {
       if (is.na(atom_template$physicalObjectName[k])) {
         atom_template$physicalObjectLocation[k] <- NA
