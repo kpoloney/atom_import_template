@@ -66,8 +66,8 @@ rules,
 descriptionStatus,[=Final]
 levelOfDetail,
 revisionHistory,
-languageOfDescription,
-scriptOfDescription,[=en]
+languageOfDescription,[=en]
+scriptOfDescription,
 sources,
 publicationStatus,[=Draft]
 digitalObjectPath,
