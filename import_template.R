@@ -78,13 +78,15 @@ transform_template <- function(origin, map, inst) {
       } else if (atom_used$atom[j] == "levelOfDescription" &
                  inst == "SFU Archives") {
         # For SFU ARM - description level is derived from other columns
-        if (origin$Sub[i] == 0 & origin$SubSub[i] == 0) {
+        # If there are no subseries or sub-subseries: select only the fonds, series, file, item columns
+        # level of description is the max column with an identifier
+        if (is.na(origin$Sub[i]) & is.na(origin$SubSub[i])) {
           s <- dplyr::select(origin, Fonds:Item, -Sub, -SubSub)
           max_na <- names(s)[max(which(is.na(s[i,]))) - 1]
           atom_template[i, "levelOfDescription"] <-
             ifelse(!is.na(origin$Item[i]), "Item", max_na)
-          
-        } else if (origin$SubSub[i] == 0) {
+        
+        } else if (is.na(origin$SubSub[i])) {
           atom_template[i, "levelOfDescription"] <-
             ifelse(!is.na(origin$Item[i]),
                    "Item",

@@ -6,15 +6,16 @@ scrb <- read.csv(file.path("data", "MappingSCRB.csv"), na.strings = "", encoding
 
 # Create UI to allow user to select a local file
 ui <- fluidPage(
-  
+  theme = bslib::bs_theme(bootswatch = "flatly"),
+  h2("AtoM import converter"),
   # user inputs original description csv
   selectInput("inst", label = "Institution", choices = c("SFU Archives", "SFU Special Collections", "Other")),
-  fileInput("descriptions", "Upload Descriptions"),
+  fileInput("descriptions", "Upload descriptions (csv)"),
   
-  # make this conditional based on input inst
+  # If the institution is outside SFU, prompt upload of field mapping csv
   conditionalPanel(
     condition = "input.inst == 'Other'",
-    fileInput("map", "Upload Mapping")
+    fileInput("map", "Upload mapping (csv)")
   ),
   uiOutput("atom")
   
