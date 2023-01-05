@@ -51,8 +51,9 @@ transform_template <- function(origin, map, inst) {
         
       } else if (!grepl("^\\[", atom_used$origin_fields[j])) {
         # differently named fields with particular requirements
-        if (atom_used$origin_fields[j] == "Start" |
-            atom_used$origin_fields[j] == "End") {
+        # if start or end dates are only a year, add -00-00 to them.
+        if ((atom_used$origin_fields[j] == "Start" |
+            atom_used$origin_fields[j] == "End") & grepl("^[[:digit:]]{4}$", origin[i, atom_used$origin_fields[j]])) {
           atom_template[i, atom_used$atom[j]]  <-
             paste0(origin[i, atom_used$origin_fields[j]], "-00-00")
           

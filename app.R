@@ -23,7 +23,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   data <- eventReactive(input$descriptions, {
-    read.csv(input$descriptions$datapath, stringsAsFactors = F, na.strings="")
+    read.csv(input$descriptions$datapath, stringsAsFactors = F, na.strings="", check.names = FALSE)
   })
   
   map_reactive <- reactive({
